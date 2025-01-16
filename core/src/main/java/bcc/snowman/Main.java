@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
@@ -36,7 +37,7 @@ public class Main extends ApplicationAdapter {
     private float HEIGHT = 6;
 
     private final int ROW_NUM = 15;
-    private final int BALLS_IN_FIRST_ROW = 3;
+    private final int BALLS_IN_FIRST_ROW = 10;
     private final float PEG_AREA_HEIGHT = HEIGHT * .8f;
     private final float PEG_AREA_START = HEIGHT * .9f;
     private final float PEG_CENTER_X = WIDTH / 2;
@@ -44,8 +45,8 @@ public class Main extends ApplicationAdapter {
     private final float SPACING_X = TOTAL_WIDTH / (ROW_NUM - 1 + BALLS_IN_FIRST_ROW - 1);
     private final float SPACING_Y = PEG_AREA_HEIGHT / (ROW_NUM - 1);
     private final float BALL_SIZE = SPACING_Y/5;
-    private final float BOUNCINESS = .05f;
-    private final float GRAVITY = 10f;
+    private final float BOUNCINESS = .3f;
+    private final float GRAVITY = 100f;
 
     public void create() {
         world = new World(new Vector2(0, -GRAVITY), true);
@@ -138,8 +139,15 @@ public class Main extends ApplicationAdapter {
     //FOR YOU TO IMPLEMENT
     private void addAllPegs() {
         //sample addPeg call
-        addPeg(PEG_CENTER_X, PEG_AREA_START, BALL_SIZE);
-
+        
+        for(int i = 0; i<ROW_NUM; i++) {
+            for (int j = 0; j<BALLS_IN_FIRST_ROW+i; j++) {
+                float x = PEG_CENTER_X - (SPACING_X * (BALLS_IN_FIRST_ROW + i - 1) / 2) + j * SPACING_X; 
+                float y = PEG_AREA_START - i * SPACING_Y; addPeg(x, y, BALL_SIZE);
+                addPeg(PEG_CENTER_X, PEG_AREA_START, BALL_SIZE);
+                
+            }
+        }
         // PLEASE USE LOOPS, DON'T MANUALLY PLACE EACH PEG
     }
 
